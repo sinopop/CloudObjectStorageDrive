@@ -1,0 +1,22 @@
+﻿【Cloud Object Storage Drive - 使用说明】
+
+1. 双击 CloudObjectStorageDrive.cmd 打开连接工具（普通双击即可，无需管理员）。
+   首次使用会自动安装 WinFsp 和 rclone（需要联网；会弹出系统授权窗口，点「是」，约 1-2 分钟）。
+
+2. 选择服务商：阿里云 OSS / Amazon S3 / 其他 S3 兼容（海外同事可切换）。
+
+3. 填写三项信息：
+   - Bucket 名称
+   - AccessKey ID
+   - AccessKey Secret
+   若账号被限制在某个子目录，请同时在「目录（可选）」中填写，例如 users/zhangsan。
+
+4. 勾选「开机自动挂载」后点击「连接并挂载」。成功后出现 Z: 盘。
+
+5. 以后开机自动挂载；断线后每 5 分钟自动重连，无需任何操作。
+
+常见问题：
+- 安装时弹出系统授权窗口：点击「是」即可；若误点取消，重新点击「连接并挂载」再试。
+- AccessKey 请向管理员索取，请勿外传；凭证保存在本机 %APPDATA%\rclone\rclone.conf。
+- 卸载：打开工具点击「卸载」即可（不会删除云端文件）。
+- 排障日志：%LOCALAPPDATA%\rclone\oss-cache\rclone-mount.log

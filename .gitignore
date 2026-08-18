@@ -1,0 +1,28 @@
+# ---- 构建产物（请勿提交）----
+*.exe
+*.zip
+
+# ---- 本地密钥 / 凭据（切勿提交）----
+oss-ram-users-accesskeys.csv
+*.pfx
+*.p12
+*.pem
+*.key
+rclone.conf
+
+# ---- 生成的用户安装包 / 本地状态 ----
+oss-mount-packages/
+mount-settings.ps1
+rclone-mount.pids
+
+# ---- 日志与临时文件 ----
+*.log
+*.tmp
+*_debug*.ps1
+cosd-*
+
+# ---- 编辑器 ----
+.idea/
+.vscode/
+*.suo
+Thumbs.db
