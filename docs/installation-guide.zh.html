@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Object Storage Drive - 安装指引</title>
+<style>
+  body { font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif; color: #1f2937; max-width: 800px; margin: 0 auto; padding: 32px 40px; line-height: 1.75; }
+  h1 { color: #14324d; border-bottom: 3px solid #1268a5; padding-bottom: 10px; }
+  h2 { color: #1268a5; margin-top: 28px; font-size: 18px; }
+  .download { display: block; background: #1268a5; color: #ffffff; text-align: center; padding: 14px 16px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold; margin: 16px 0; }
+  .download:hover { background: #0e548a; }
+  .note { background: #eef4fb; border-left: 4px solid #1268a5; padding: 10px 14px; margin: 12px 0; border-radius: 0 4px 4px 0; }
+  .warn { background: #fdf3e7; border-left: 4px solid #d97706; padding: 10px 14px; margin: 12px 0; border-radius: 0 4px 4px 0; }
+  ol.steps > li { margin: 10px 0; }
+  ol.steps ul { margin-top: 4px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+  th, td { border: 1px solid #d1d5db; padding: 8px 10px; text-align: left; font-size: 14px; }
+  th { background: #f3f4f6; }
+  code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  .footer { margin-top: 36px; color: #9ca3af; font-size: 12px; text-align: center; }
+  @media print {
+    body { padding: 0; }
+    .download { border: 1px solid #1268a5; color: #1268a5; background: #ffffff; }
+    h2 { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>☁️ Cloud Object Storage Drive 安装指引</h1>
+<p>把云端对象存储（阿里云 OSS / Amazon S3 等）挂载为电脑上的一个磁盘（如 <b>Z: 盘</b>），像本地磁盘一样使用。全流程约 <b>3 分钟</b>。</p>
+
+<h2>一、准备工作</h2>
+<ul>
+  <li>Windows 10 / 11 电脑（无需安装其他任何软件）</li>
+  <li>向管理员索取三项信息：<b>Bucket 名称</b>、<b>AccessKey ID</b>、<b>AccessKey Secret</b></li>
+</ul>
+
+<h2>二、下载安装包</h2>
+<a class="download" href="https://github.com/sinopop/CloudObjectStorageDrive/releases/download/v0.1/CloudObjectStorageDrive-v0.1.zip">⬇ 点击下载 CloudObjectStorageDrive-v0.1.zip（约 17 KB）</a>
+<p>如果点击无法下载，请复制以下地址到浏览器地址栏打开：</p>
+<p><code>https://github.com/sinopop/CloudObjectStorageDrive/releases/download/v0.1/CloudObjectStorageDrive-v0.1.zip</code></p>
+
+<h2>三、安装步骤</h2>
+<ol class="steps">
+  <li>把下载的 zip 解压到任意文件夹（例如桌面新建的「CloudDrive」文件夹）。</li>
+  <li>双击 <b>CloudObjectStorageDrive.cmd</b>（普通双击即可，<b>不需要</b>右键“以管理员身份运行”）。</li>
+  <li>首次使用会自动安装两个组件（WinFsp、rclone）：<b>弹出系统授权窗口时点击「是」</b>，等待约 1–2 分钟。</li>
+  <li>在打开的窗口中，先选择服务商与区域：
+    <ul>
+      <li>阿里云 OSS：选择你桶所在的地域（如新加坡、华东1 杭州等）</li>
+      <li>Amazon S3：选择对应区域</li>
+      <li>其他 S3 兼容存储：填写 Endpoint 地址</li>
+    </ul>
+  </li>
+  <li>填写三项信息：<b>Bucket 名称 / AccessKey ID / AccessKey Secret</b>。
+    <div class="note">若你的账号被限制在某个目录，请在「目录（可选）」中填写，例如 <code>users/zhangsan</code>；整桶权限的用户留空即可。</div>
+  </li>
+  <li>勾选 <b>「开机自动挂载」</b>，点击 <b>「连接并挂载」</b>。</li>
+  <li>等待提示“挂载成功”，点击「退出」关闭窗口。</li>
+</ol>
+
+<h2>四、完成</h2>
+<ul>
+  <li>打开“此电脑”，即可看到新盘符（优先 <b>Z: 盘</b>），像普通磁盘一样使用。</li>
+  <li>以后 <b>开机自动挂载、断线自动重连</b>，无需任何操作。</li>
+</ul>
+
+<h2>五、常见问题</h2>
+<table>
+  <tr><th>问题</th><th>解决方法</th></tr>
+  <tr><td>提示安装组件 / 弹出授权窗口</td><td>点击「是」即可；若误点取消，重新点击「连接并挂载」再试</td></tr>
+  <tr><td>提示无法访问 / AccessDenied</td><td>确认「目录（可选）」是否填了你的目录前缀</td></tr>
+  <tr><td>连接失败</td><td>核对 Bucket / AccessKey / 区域是否正确，或联系管理员</td></tr>
+  <tr><td>如何卸载</td><td>打开工具点击「卸载」（不会删除云端文件）</td></tr>
+  <tr><td>界面是英文</td><td>窗口右上角可切换 中文 / EN</td></tr>
+</table>
+
+<h2>六、安全提醒</h2>
+<div class="warn">AccessKey 相当于账号密码，<b>请勿转发给他人</b>；本工具仅将凭证保存在你自己的电脑上。离职或怀疑泄露时，请及时联系管理员停用。</div>
+
+<p class="footer">Cloud Object Storage Drive · v0.1 · 如有问题请联系管理员</p>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Object Storage Drive - Installation Guide</title>
+<style>
+  body { font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif; color: #1f2937; max-width: 800px; margin: 0 auto; padding: 32px 40px; line-height: 1.75; }
+  h1 { color: #14324d; border-bottom: 3px solid #1268a5; padding-bottom: 10px; }
+  h2 { color: #1268a5; margin-top: 28px; font-size: 18px; }
+  .download { display: block; background: #1268a5; color: #ffffff; text-align: center; padding: 14px 16px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold; margin: 16px 0; }
+  .download:hover { background: #0e548a; }
+  .note { background: #eef4fb; border-left: 4px solid #1268a5; padding: 10px 14px; margin: 12px 0; border-radius: 0 4px 4px 0; }
+  .warn { background: #fdf3e7; border-left: 4px solid #d97706; padding: 10px 14px; margin: 12px 0; border-radius: 0 4px 4px 0; }
+  ol.steps > li { margin: 10px 0; }
+  ol.steps ul { margin-top: 4px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+  th, td { border: 1px solid #d1d5db; padding: 8px 10px; text-align: left; font-size: 14px; }
+  th { background: #f3f4f6; }
+  code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  .footer { margin-top: 36px; color: #9ca3af; font-size: 12px; text-align: center; }
+  @media print {
+    body { padding: 0; }
+    .download { border: 1px solid #1268a5; color: #1268a5; background: #ffffff; }
+    h2 { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>☁️ Cloud Object Storage Drive - Installation Guide</h1>
+<p>Mount cloud object storage (Alibaba Cloud OSS / Amazon S3, etc.) as a drive letter on your PC (e.g. <b>Z:</b>), just like a local disk. The whole process takes about <b>3 minutes</b>.</p>
+
+<h2>1. Before you start</h2>
+<ul>
+  <li>Windows 10 / 11 computer (no other software required)</li>
+  <li>Get these three items from your administrator: <b>Bucket name</b>, <b>AccessKey ID</b>, <b>AccessKey Secret</b></li>
+</ul>
+
+<h2>2. Download</h2>
+<a class="download" href="https://github.com/sinopop/CloudObjectStorageDrive/releases/download/v0.1/CloudObjectStorageDrive-v0.1.zip">⬇ Download CloudObjectStorageDrive-v0.1.zip (~17 KB)</a>
+<p>If the button does not work, copy and paste this address into your browser:</p>
+<p><code>https://github.com/sinopop/CloudObjectStorageDrive/releases/download/v0.1/CloudObjectStorageDrive-v0.1.zip</code></p>
+
+<h2>3. Installation steps</h2>
+<ol class="steps">
+  <li>Extract the downloaded zip to any folder (e.g. a new folder named "CloudDrive" on your desktop).</li>
+  <li>Double-click <b>CloudObjectStorageDrive.cmd</b> (a normal double-click - <b>no need</b> to "Run as administrator").</li>
+  <li>On first use two components (WinFsp, rclone) are installed automatically: <b>click "Yes" on the system prompt</b> and wait about 1-2 minutes.</li>
+  <li>In the window that opens, pick the provider and region:
+    <ul>
+      <li>Alibaba Cloud OSS: select the region of your bucket (e.g. Singapore, East China 1 Hangzhou, etc.)</li>
+      <li>Amazon S3: select the matching region</li>
+      <li>Other S3-compatible storage: enter the Endpoint URL</li>
+    </ul>
+  </li>
+  <li>Enter the three items: <b>Bucket name / AccessKey ID / AccessKey Secret</b>.
+    <div class="note">If your account is limited to a folder prefix, fill it in <b>"Path (optional)"</b>, e.g. <code>users/zhangsan</code>; users with full-bucket access can leave it empty.</div>
+  </li>
+  <li>Check <b>"Auto-mount on sign-in"</b> and click <b>"Connect &amp; Mount"</b>.</li>
+  <li>Wait for "Mounted successfully", then click "Exit" to close the window.</li>
+</ol>
+
+<h2>4. Done</h2>
+<ul>
+  <li>Open "This PC" - you will see the new drive (prefers <b>Z:</b>), usable like a normal local disk.</li>
+  <li>From now on it <b>auto-mounts at sign-in and reconnects automatically</b> after disconnects - no action needed.</li>
+</ul>
+
+<h2>5. FAQ</h2>
+<table>
+  <tr><th>Issue</th><th>Solution</th></tr>
+  <tr><td>Prompt about installing components / system prompt appears</td><td>Click "Yes"; if you accidentally cancel, click "Connect &amp; Mount" again</td></tr>
+  <tr><td>Access denied / cannot access</td><td>Make sure "Path (optional)" matches your folder prefix</td></tr>
+  <tr><td>Connection failed</td><td>Check Bucket / AccessKey / region, or contact the administrator</td></tr>
+  <tr><td>How to uninstall</td><td>Open the tool and click "Remove" (cloud files are not deleted)</td></tr>
+  <tr><td>The UI is in Chinese</td><td>Use the 中文 / EN switch in the top-right corner</td></tr>
+</table>
+
+<h2>6. Security note</h2>
+<div class="warn">Your AccessKey is like a password - <b>do not share it with anyone</b>. The tool stores the credentials only on your own computer. If you leave the team or suspect a leak, contact the administrator to disable it.</div>
+
+<p class="footer">Cloud Object Storage Drive · v0.1 · Contact your administrator if you need help</p>
+
+</body>
+</html>
