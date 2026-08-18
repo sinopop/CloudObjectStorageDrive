@@ -1,5 +1,7 @@
 # Cloud Object Storage Drive
 
+[English](README.en.md) | 中文
+
 Mount **Alibaba Cloud OSS / Amazon S3 / any S3-compatible storage** as a Windows drive letter, with a bilingual (Chinese/English) GUI inspired by Alibaba Cloud OSSBrowser 2.0. No credentials are baked into the installer — every user enters their own **Bucket / AccessKey ID / AccessKey Secret** on first run.
 
 中文说明：把阿里云 OSS / Amazon S3 / S3 兼容存储以盘符形式挂载到 Windows。一份通用安装包分发给所有人，首次使用时在 GUI 里填写三项信息即可，不预置任何人的密钥。支持开机自动挂载、断线自动重连、中英文界面切换。
