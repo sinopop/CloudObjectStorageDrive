@@ -44,6 +44,8 @@ CloudObjectStorageDrive.cmd + CloudObjectStorageDrive.Gui.ps1 + CloudObjectStora
 `CloudObjectStorageDrive.Core.ps1`、`使用说明.txt` 四个文件打成 zip 发给使用方即可。
 任何机器可用，包括开启 Windows Smart App Control 的 Win11。
 
+📄 **安装指引（图文版）**：[中文](docs/installation-guide.zh.html) | [English](docs/installation-guide.en.html)
+
 ## 工作原理
 
 - 底层使用 [rclone](https://rclone.org/)（S3 兼容端点）+ [WinFsp](https://winfsp.dev/) 挂载；

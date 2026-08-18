@@ -44,6 +44,8 @@ CloudObjectStorageDrive.Core.ps1
 
 **4-file zip (recommended)**: package `CloudObjectStorageDrive.cmd`, `CloudObjectStorageDrive.Gui.ps1`, `CloudObjectStorageDrive.Core.ps1`, `使用说明.txt` into a zip and share it. Works on any machine, including Windows 11 with Smart App Control enabled (no unsigned executables involved).
 
+📄 **Installation guide (with screenshots)**: [English](docs/installation-guide.en.html) | [中文](docs/installation-guide.zh.html)
+
 ## How it works
 
 - Built on [rclone](https://rclone.org/) (S3-compatible endpoint) + [WinFsp](https://winfsp.dev/);
