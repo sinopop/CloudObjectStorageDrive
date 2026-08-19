@@ -298,8 +298,22 @@ function Install-OssMountScripts {
 
 $OssMountTaskNames = @("Mount OSS drive (start)", "Mount OSS drive (watchdog)")
 
+function New-HiddenVbsLauncher {
+    # Creates a .vbs that runs the given PowerShell script fully hidden.
+    # Scheduled tasks that run powershell.exe directly flash a console window
+    # even with -WindowStyle Hidden (the console is created before the switch
+    # is applied). wscript.exe never shows a console, so there is no flash.
+    param(
+        [Parameter(Mandatory = $true)][string]$ScriptPath,
+        [Parameter(Mandatory = $true)][string]$VbsPath
+    )
+    $vbs = 'CreateObject("Wscript.Shell").Run "powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File ""' + $ScriptPath + '""", 0, False'
+    [System.IO.File]::WriteAllText($VbsPath, $vbs, (New-Object System.Text.ASCIIEncoding))
+}
+
 function Register-OssMountTasks {
     # Logon task starts the mount; watchdog task restarts it every 5 minutes.
+    # Both tasks run through hidden VBS launchers so no console window flashes.
     param(
         [Parameter(Mandatory = $true)][string]$ScriptRoot,
         [Parameter(Mandatory = $true)][string]$User
@@ -307,6 +321,8 @@ function Register-OssMountTasks {
 
     $startScript = Join-Path $ScriptRoot "Start-OssMount.ps1"
     $watchdogScript = Join-Path $ScriptRoot "Watchdog-OssMount.ps1"
+    $startVbs = Join-Path $ScriptRoot "Start-OssMount.vbs"
+    $watchdogVbs = Join-Path $ScriptRoot "Watchdog-OssMount.vbs"
 
     foreach ($name in $OssMountTaskNames) {
         Unregister-ScheduledTask -TaskName $name -Confirm:$false -ErrorAction SilentlyContinue
@@ -315,11 +331,14 @@ function Register-OssMountTasks {
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0
     $principal = New-ScheduledTaskPrincipal -UserId $User -LogonType Interactive -RunLevel Limited
 
-    $startAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$startScript`""
+    New-HiddenVbsLauncher -ScriptPath $startScript -VbsPath $startVbs
+    New-HiddenVbsLauncher -ScriptPath $watchdogScript -VbsPath $watchdogVbs
+
+    $startAction = New-ScheduledTaskAction -Execute "wscript.exe" -Argument "`"$startVbs`""
     $startTrigger = New-ScheduledTaskTrigger -AtLogOn -User $User
     Register-ScheduledTask -TaskName $OssMountTaskNames[0] -Action $startAction -Trigger $startTrigger -Principal $principal -Settings $settings | Out-Null
 
-    $watchdogAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$watchdogScript`""
+    $watchdogAction = New-ScheduledTaskAction -Execute "wscript.exe" -Argument "`"$watchdogVbs`""
     $watchdogTrigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 5) -RepetitionDuration (New-TimeSpan -Days 3650)
     Register-ScheduledTask -TaskName $OssMountTaskNames[1] -Action $watchdogAction -Trigger $watchdogTrigger -Principal $principal -Settings $settings | Out-Null
 }
