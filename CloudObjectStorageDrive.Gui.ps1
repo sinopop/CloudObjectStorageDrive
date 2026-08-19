@@ -114,6 +114,7 @@ function Set-LanguageStrings {
             ErrAkSecret    = "Please enter the AccessKey Secret."
             ErrEndpoint    = "Please select or enter a Region/Endpoint."
             ErrNoRclone    = "rclone still not found after install. Please close and reopen the tool and retry; if it still fails, install rclone manually (winget install Rclone.Rclone)."
+            ErrNoWinFsp    = "WinFsp is still not installed, so mounting cannot work. Click 'Connect & Mount' again and click Yes on the system prompt, or install WinFsp manually (winget install WinFsp.WinFsp)."
             SuccessTitle   = "Mount successful"
             SuccessMsg     = "Congratulations! Cloud Storage has been mounted successfully.`r`n`r`nDrive {0}: is ready. You can now safely exit."
             BtnExit        = "Exit"
@@ -188,6 +189,7 @@ function Set-LanguageStrings {
             ErrAkSecret    = "请填写 AccessKey Secret。"
             ErrEndpoint    = "请选择或填写区域/Endpoint。"
             ErrNoRclone    = "安装后仍未找到 rclone。请关闭本工具后重新打开再试；若仍失败，请手动安装 rclone（winget install Rclone.Rclone）。"
+            ErrNoWinFsp    = "WinFsp 仍未安装，挂载将无法进行。请重新点击「连接并挂载」并在授权窗口点击「是」，或手动安装（winget install WinFsp.WinFsp）。"
             SuccessTitle   = "挂载成功"
             SuccessMsg     = "恭喜，你已经成功挂载 Cloud Storage 到本机！`r`n`r`n盘符 {0}: 已就绪，现在可以安全退出。"
             BtnExit        = "退出"
@@ -700,13 +702,16 @@ $script:connectButton.Add_Click({
         Add-Log (($script:S.LogProvider) -f $providerName)
         Add-Log (($script:S.LogBucketReg) -f $bucket, $endpoint)
 
-        # 1) Dependencies
+        # 1) Dependencies - install when rclone OR WinFsp is missing
         $rclone = Get-RcloneExecutable
-        if (-not $rclone) {
+        $winfspOk = Test-WinFspInstalled
+        if (-not $rclone -or -not $winfspOk) {
             Add-Log $script:S.LogNoRclone
             Install-OssDependencies
             $rclone = Get-RcloneExecutable
+            $winfspOk = Test-WinFspInstalled
             if (-not $rclone) { throw $script:S.ErrNoRclone }
+            if (-not $winfspOk) { throw $script:S.ErrNoWinFsp }
         }
         Add-Log (($script:S.LogRclonePath) -f $rclone)
 

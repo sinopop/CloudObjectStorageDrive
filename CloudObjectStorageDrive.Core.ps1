@@ -45,6 +45,20 @@ function Get-RcloneExecutable {
     return $null
 }
 
+function Test-WinFspInstalled {
+    # Returns $true if WinFsp is present (its FUSE DLL exists).
+    # rclone mount fails with "cannot find winfsp" when it is missing.
+    $paths = @(
+        "${env:ProgramFiles(x86)}\WinFsp\bin\winfsp-x64.dll",
+        "$env:ProgramFiles\WinFsp\bin\winfsp-x64.dll",
+        "$env:ProgramFiles\WinFsp\bin\winfsp.dll"
+    )
+    foreach ($p in $paths) {
+        if (Test-Path $p) { return $true }
+    }
+    return $false
+}
+
 function Get-FirstFreeDriveLetter {
     param([string]$Preferred = "Z")
     $preferred = $Preferred.Trim().TrimEnd(":").ToUpper()
